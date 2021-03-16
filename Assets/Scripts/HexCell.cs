@@ -8,9 +8,10 @@ public class HexCell : MonoBehaviour
     public Material[] materials;
     public int type = 0;
     public HexGrid grid_reference;
-    public float level = 0f;
-    public float UPlevel = 0.1f;
-    public float scaleUP = 1.0f;
+    private int internal_timer = 0;
+    //public float level = 0f;
+    //public float UPlevel = 0.1f;
+    //public float scaleUP = 1.0f;
     Mesh mesh;
 
     public GameObject[] neighbours;
@@ -22,7 +23,7 @@ public class HexCell : MonoBehaviour
     void Start()
     {
         mesh = GetComponent<MeshFilter>().mesh;
-        ChangeType(1);
+        ChangeType(0);
         CreateMesh();
         RecalculateMesh();
         GetComponent<MeshCollider>().sharedMesh = mesh;
@@ -47,15 +48,16 @@ public class HexCell : MonoBehaviour
     public void PlaceHex()
     {
         settled = true;
+        ChangeType(1);
         CreateNeighbours();
     }
 
-    public void CreateNeighbours()
+    private void CreateNeighbours()
     {
         grid_reference.CreateCellsAround(id);
     }
 
-    public void ChangeType(int number)
+    private void ChangeType(int number)
     {
         type = number;
         ChangeMaterial(HexTypes.types[type].material);
@@ -71,7 +73,7 @@ public class HexCell : MonoBehaviour
         GetComponent<Transform>().Rotate(0, 60 * number_of_times, 0);
     }
 
-    public void CreateMesh()
+    private void CreateMesh()
     {
         foreach (Vector3 vert in HexMetrics.corners)
             verts.Add(vert);
@@ -79,7 +81,7 @@ public class HexCell : MonoBehaviour
             trings.Add(intt);
     }
 
-    void RecalculateMesh()
+    private void RecalculateMesh()
     {
         mesh.Clear();
         mesh.vertices = verts.ToArray();
@@ -89,40 +91,22 @@ public class HexCell : MonoBehaviour
 
     public void PickUp(int model_number)
     {
-        transform.SetPositionAndRotation(new Vector3(transform.position.x, UPlevel, transform.position.z), transform.rotation);
-        transform.localScale = new Vector3(scaleUP, 1f, scaleUP);
+        internal_timer = 2;
         if (!settled)
             ChangeHexModel(model_number);
-        ChangeType(0);
     }
-
-    public void PutDown()
-    {
-        if (transform.position.y < UPlevel)
-        {
-            if (!settled)
-            {
-                ChangeType(0);
-                DeleteHexModel();
-            }
-        }
-        if (transform.position.y > level)
-        {
-            transform.SetPositionAndRotation(new Vector3(transform.position.x, transform.position.y - 0.4f, transform.position.z), transform.rotation);
-        }
-        else
-        {
-            transform.SetPositionAndRotation(new Vector3(transform.position.x, level, transform.position.z), transform.rotation);
-        }
-
-
-        if (transform.localScale.x > 1f)
-            transform.localScale = new Vector3(transform.localScale.x - 0.1f, 1f, transform.localScale.z - 0.1f);
-    }
-
 
     void Update()
     {
-        PutDown();
+        if (internal_timer <= 0)
+        {
+            internal_timer = 0;
+            if (!settled)
+            {
+                DeleteHexModel();
+            }
+        }
+        else
+           internal_timer -= 1;
     }
 }

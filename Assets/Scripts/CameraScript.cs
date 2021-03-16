@@ -10,7 +10,7 @@ public class CameraScript : MonoBehaviour
 
     public int current_model_to_place;
 
-    // Start is called before the first frame update
+
     void Start()
     {
         cameraa = GetComponent<Camera>();
@@ -23,7 +23,7 @@ public class CameraScript : MonoBehaviour
         return Random.Range(0, grid_reference.models.Length);
     }
 
-    // Update is called once per frame
+
     void Update()
     {
         Pickup();

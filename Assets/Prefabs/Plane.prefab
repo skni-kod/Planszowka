@@ -109,14 +109,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   materials:
   - {fileID: 2100000, guid: 9e4152dd84ab29d48ba570ce9c29c37e, type: 2}
-  - {fileID: 2100000, guid: 1babbfd6c33a633409cf30db6951df61, type: 2}
-  - {fileID: 2100000, guid: 339277f60af2ae64c88d644096acab9e, type: 2}
-  - {fileID: 2100000, guid: c254a88d944bdbf44bdec4c3cd66eef5, type: 2}
+  - {fileID: 2100000, guid: e2e6271055727af4db4285bab6a5265f, type: 2}
   type: 0
   grid_reference: {fileID: 0}
-  level: 0
-  UPlevel: 0.4
-  scaleUP: 1
   neighbours: []
+  id: {x: 0, y: 0, z: 0}
   settled: 0
   owner: none
