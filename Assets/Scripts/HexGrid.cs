@@ -13,7 +13,7 @@ public class HexGrid : MonoBehaviour
 	void Awake()
 	{
 		CreateCell(0, 0, 0);
-		CreateCellsAround(new Vector3(0, 0, 0));
+		//CreateCellsAround(new Vector3(0, 0, 0));
 	}
 
 	void Start()

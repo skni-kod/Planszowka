@@ -29,6 +29,11 @@ public class HexCell : MonoBehaviour
         GetComponent<MeshCollider>().sharedMesh = mesh;
     }
 
+    void Update()
+    {
+        HandleInternalTimer();
+    }
+
     public void DeleteHexModel()
     {
         var children = new List<GameObject>();
@@ -89,14 +94,14 @@ public class HexCell : MonoBehaviour
         mesh.RecalculateNormals();
     }
 
-    public void PickUp(int model_number)
+    public void ShowModel(int model_number)
     {
-        internal_timer = 2;
+        internal_timer = 3;
         if (!settled)
             ChangeHexModel(model_number);
     }
 
-    void Update()
+    private void HandleInternalTimer()
     {
         if (internal_timer <= 0)
         {
@@ -107,6 +112,6 @@ public class HexCell : MonoBehaviour
             }
         }
         else
-           internal_timer -= 1;
+            internal_timer -= 1;
     }
 }

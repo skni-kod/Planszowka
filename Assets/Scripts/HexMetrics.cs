@@ -57,7 +57,6 @@ public static class HexMetrics
 		10, 11, 5,
 		0, 5, 11,
 		11, 6, 0
-
 	};
 
 }
