@@ -9,8 +9,8 @@ public static class TreesData
     {
 
         { "small_forest", new List<string>() { "forest1", "forest1", "forest1"} },
-        { "medium_forest", new List<string>() { "forest1", "forest1", "forest1" } },
-        { "large_forest", new List<string>() { "forest1", "forest1", "forest1" } },
+        { "medium_forest", new List<string>() { "medium_tree" } },
+        { "large_forest", new List<string>() { "big_tree" } },
 
     };
 

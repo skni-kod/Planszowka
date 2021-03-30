@@ -265,7 +265,7 @@ Light:
   m_InnerSpotAngle: 21.80208
   m_CookieSize: 10
   m_Shadows:
-    m_Type: 2
+    m_Type: 0
     m_Resolution: -1
     m_CustomResolution: -1
     m_Strength: 1
@@ -399,7 +399,7 @@ PrefabInstance:
     - target: {fileID: 858034718494755847, guid: 7e741d17a6b975d4b89f244c68721ad7,
         type: 3}
       propertyPath: InitialGridSize
-      value: 60
+      value: 40
       objectReference: {fileID: 0}
     - target: {fileID: 858034718494755896, guid: 7e741d17a6b975d4b89f244c68721ad7,
         type: 3}

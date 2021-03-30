@@ -9,19 +9,23 @@ public static class HexMapGenerator
     public static float seed = 2137f;
 
 
-    public static int GenerateHexType(Vector3 id)
+    public static string GenerateHexType(Vector3 id)
     {
-        int type = 2;
+        string type = "grass";
 
         float x = (id.x - id.y) * (HexMetrics.innerRadius);
         float z = id.z * (HexMetrics.outerRadius * 1.5f);
 
 
         if (GeneratePineForestChance(x, z) < pineForestChance)
-            type = 4;
+            type = "small_forest";
+        if (GeneratePineForestChance(x, z) < pineForestChance * 0.7f)
+            type = "medium_forest";
+        if (GeneratePineForestChance(x, z) < pineForestChance * 0.4f)
+            type = "large_forest";
 
         if (GenerateWaterChance(x, z) < waterChance)
-            type = 3;
+            type = "water";
 
 
         return type;
