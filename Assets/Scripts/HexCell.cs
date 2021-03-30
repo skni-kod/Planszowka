@@ -1,82 +1,110 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
+
 public class HexCell : MonoBehaviour
 {
     List<Vector3> verts = new List<Vector3>();
     List<int> trings = new List<int>();
-    public Material[] materials;
     public int type = 0;
     public HexGrid grid_reference;
-    private int internal_timer = 0;
-    //public float level = 0f;
-    //public float UPlevel = 0.1f;
-    //public float scaleUP = 1.0f;
+    public Dictionary<Vector3, bool> places = new Dictionary<Vector3, bool>();
     Mesh mesh;
 
-    public GameObject[] neighbours;
     public Vector3 id;
     public bool settled = false;
+    public bool has_building;
     public string owner = "none";
 
 
     void Start()
     {
         mesh = GetComponent<MeshFilter>().mesh;
-        ChangeType(0);
+        ChangeTypeInternal(0);
         CreateMesh();
         RecalculateMesh();
         GetComponent<MeshCollider>().sharedMesh = mesh;
     }
 
-    void Update()
+    #region PlacingTrees
+    public void PlaceForest()
     {
-        HandleInternalTimer();
-    }
-
-    public void DeleteHexModel()
-    {
-        var children = new List<GameObject>();
-        foreach (Transform child in transform)
-            children.Add(child.gameObject);
-        children.ForEach(child => Destroy(child));
-    }
-
-    public void ChangeHexModel(int model_number)
-    {
-        DeleteHexModel();
-        GameObject model = Instantiate<GameObject>(grid_reference.models[model_number]);
+        GameObject model = (GameObject)Instantiate(Resources.Load("Trees/forest1"));
         model.transform.SetParent(transform, false);
-        model.transform.SetPositionAndRotation(new Vector3(transform.position.x, transform.position.y - 0.01f, transform.position.z), transform.rotation);
     }
 
-    public void PlaceHex()
+    #endregion
+
+    #region ExternalGridInterface
+
+    public void PlaceHex(bool generate_neighbours)
     {
-        settled = true;
-        ChangeType(1);
-        CreateNeighbours();
+        PlaceHexInternal(generate_neighbours);
     }
 
-    private void CreateNeighbours()
+    public void CreateNeighbours()
     {
-        grid_reference.CreateCellsAround(id);
+        CreateNeighboursInternal();
     }
 
-    private void ChangeType(int number)
+    public void ChangeType(int number)
     {
-        type = number;
-        ChangeMaterial(HexTypes.types[type].material);
+        ChangeTypeInternal(number);
     }
 
-    public void ChangeMaterial(int number)
+    public void ChangeMaterial(string name)
     {
-        GetComponent<MeshRenderer>().material = materials[number];
+        ChangeMaterialInternal(name);
     }
 
     public void RotateRight(int number_of_times)
     {
+        RotateRightInternal(number_of_times);
+    }
+
+    #endregion
+
+    #region InternalGridMethods
+    private void PlaceHexInternal(bool generate_neighbours)
+    {
+        settled = true;
+        ChangeTypeInternal(HexMapGenerator.GenerateHexType(id));
+        
+        if (type == 4)
+            PlaceForest();
+
+
+        if (generate_neighbours)
+            CreateNeighboursInternal();
+
+    }
+
+    private void CreateNeighboursInternal()
+    {
+        grid_reference.CreateCellsAround(id);
+    }
+
+    private void ChangeTypeInternal(int number)
+    {
+        if (!(number == 0 && settled == true))
+        {
+            type = number;
+            ChangeMaterialInternal(HexTypes.types[type].material_name);
+        }
+    }
+
+    private void ChangeMaterialInternal(string name)
+    {
+        GetComponent<MeshRenderer>().material = Resources.Load<Material>(string.Format("Materials/{0}", name));
+    }
+
+    private void RotateRightInternal(int number_of_times)
+    {
         GetComponent<Transform>().Rotate(0, 60 * number_of_times, 0);
     }
+    #endregion
+
+    #region MeshStuff
 
     private void CreateMesh()
     {
@@ -92,6 +120,40 @@ public class HexCell : MonoBehaviour
         mesh.vertices = verts.ToArray();
         mesh.triangles = trings.ToArray();
         mesh.RecalculateNormals();
+    }
+
+    #endregion
+
+    #region PlacingBuildings
+
+    public void PlaceBuilding(int building_id)
+    {
+        if (places.Count == 0 && type == 2 && !has_building)
+        {
+            GameObject model = (GameObject)Instantiate(Resources.Load("Buildings/tartak"));
+            model.transform.SetParent(transform, false);
+            has_building = true;
+        }
+    }
+
+    #endregion
+
+    #region ModelMethods
+    /*
+    public void DeleteHexModel()
+    {
+        var children = new List<GameObject>();
+        foreach (Transform child in transform)
+            children.Add(child.gameObject);
+        children.ForEach(child => Destroy(child));
+    }
+
+    public void ChangeHexModel(int model_number)
+    {
+        DeleteHexModel();
+        GameObject model = Instantiate<GameObject>(grid_reference.models[model_number]);
+        model.transform.SetParent(transform, false);
+        model.transform.SetPositionAndRotation(new Vector3(transform.position.x, transform.position.y - 0.01f, transform.position.z), transform.rotation);
     }
 
     public void ShowModel(int model_number)
@@ -114,4 +176,6 @@ public class HexCell : MonoBehaviour
         else
             internal_timer -= 1;
     }
+    */
+    #endregion
 }

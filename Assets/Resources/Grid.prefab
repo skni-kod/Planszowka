@@ -1,0 +1,59 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &858034718494755896
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 858034718494755846}
+  - component: {fileID: 858034718494755847}
+  m_Layer: 0
+  m_Name: Grid
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &858034718494755846
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 858034718494755896}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &858034718494755847
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 858034718494755896}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: faf846a2adad5dc44b14ef649811f5fc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  models:
+  - {fileID: 922616166237615597, guid: 8937aa12ddff455439ee66ef41efe20f, type: 3}
+  - {fileID: 9218604082533892551, guid: d13e01c482147fa48abea50a47f1b349, type: 3}
+  - {fileID: 3006977969948977071, guid: beed51ea7aa354f48aee4f978c56ae5b, type: 3}
+  - {fileID: 6344941694058061173, guid: 5147c643808297f4a8484a9b4c667e60, type: 3}
+  - {fileID: 6883235620807530538, guid: 5414a34a82b9bbb468a9bce5ee85e328, type: 3}
+  - {fileID: 7024893329462089385, guid: 1e0dd17ebaee1bf48bd8051fbab92831, type: 3}
+  - {fileID: 764838999927478649, guid: 31217572edcea1e4f8dfafaad8200ff2, type: 3}
+  - {fileID: 6471658403852920914, guid: 06779741561c7b24aad024e82152761a, type: 3}
+  - {fileID: 8392226892147557456, guid: 4e1315692df9f3043be594bd158fa56a, type: 3}
+  - {fileID: 627257112636969204, guid: 8a92ee30eb0d3a14e9717c6dec55762f, type: 3}
+  - {fileID: 922616166237615597, guid: 54f20b6ec7c63fd4f900c02b85391b54, type: 3}
+  cellPrefab: {fileID: 7046654279424093127, guid: 817fda16a88aecb41913394068b3c70a,
+    type: 3}

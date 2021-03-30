@@ -1,0 +1,48 @@
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public static class HexMapGenerator
+{
+    public static float pineForestChance = 0.5f;
+    public static float waterChance = 0.34f;
+    public static float seed = 2137f;
+
+
+    public static int GenerateHexType(Vector3 id)
+    {
+        int type = 2;
+
+        float x = (id.x - id.y) * (HexMetrics.innerRadius);
+        float z = id.z * (HexMetrics.outerRadius * 1.5f);
+
+
+        if (GeneratePineForestChance(x, z) < pineForestChance)
+            type = 4;
+
+        if (GenerateWaterChance(x, z) < waterChance)
+            type = 3;
+
+
+        return type;
+    }
+
+
+    #region PerlinChances
+    public static float GeneratePineForestChance(float x, float z)
+    {
+        float p = Mathf.PerlinNoise(seed + x / 90, seed + z / 90) * 0.6f;
+        float drobnyP = Mathf.PerlinNoise(seed + x / 9, seed + z / 9) * 0.3f;
+        float duzyP = Mathf.PerlinNoise(seed + x / 900, seed + z / 900) * 0.1f;
+        return p + drobnyP + duzyP;
+    }
+
+    public static float GenerateWaterChance(float x, float z)
+    {
+        float p2 = Mathf.PerlinNoise(x * 2f, -seed + z * 1.5f) * 0.2f;
+        float p3 = Mathf.PerlinNoise(seed * 4 + x / 140f, -seed + z / 200f) * 0.8f;
+        return p2 + p3;
+    }
+    #endregion
+
+}

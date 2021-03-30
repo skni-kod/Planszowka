@@ -1,21 +1,21 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Photon.Pun;
 
-public class CameraScript : MonoBehaviour
+public class CameraScript : MonoBehaviourPun
 {
     public GameObject selected_object;
-    public Camera cameraa;
+    private Camera cameraa;
     public HexGrid grid_reference;
     public Transform camera_holder;
 
-    public int current_model_to_place;
+    //public int current_model_to_place;
 
 
     void Start()
     {
         cameraa = GetComponent<Camera>();
-        current_model_to_place = RandomModelID();
     }
 
 
@@ -32,25 +32,10 @@ public class CameraScript : MonoBehaviour
         if (selected_object != null)
         {
             HexCell hex = selected_object.GetComponent<HexCell>();
-            //Then we check if it's set, and if not -> we show model
-            if (!hex.settled)
-            {
-                hex.ShowModel(current_model_to_place);
-                //Now we place the hex on mouse_left_button, and reroll next hex model to place
-                if (Input.GetMouseButtonDown(0))
-                {
-                    hex.PlaceHex();
-                    current_model_to_place = RandomModelID();
-                }
-                //Or rotate on mouse_right_button
-                if (Input.GetMouseButtonDown(1))
-                {
-                    hex.RotateRight(1);
-                }
-            }
+            Vector3 hex_id = hex.id;
+
         }
     }
-
 
     void PickHex()
     {
@@ -91,10 +76,5 @@ public class CameraScript : MonoBehaviour
             if (Input.GetKey(KeyCode.D))
                 camera_holder.Translate(new Vector3(1, 0, 0) * Time.deltaTime * 50, Space.Self);
         }
-    }
-
-    public int RandomModelID()
-    {
-        return Random.Range(0, grid_reference.models.Length);
     }
 }

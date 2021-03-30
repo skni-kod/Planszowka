@@ -1,26 +1,26 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
 using UnityEngine.UI;
+using Photon.Pun;
 
-public class HexGrid : MonoBehaviour
+public class HexGrid : MonoBehaviourPun
 {
-
-	public GameObject[] models;
+	[SerializeField]
+	private int InitialGridSize = 10;
 	public HexCell cellPrefab;
 
 	public Dictionary<Vector3, HexCell> cells = new Dictionary<Vector3, HexCell>();
 
 	void Awake()
 	{
-		CreateCell(0, 0, 0);
-		//CreateCellsAround(new Vector3(0, 0, 0));
+		//CreateCell(0, 0, 0, false);
+		CreateCellsRadius(Vector3.zero, InitialGridSize);
+		//CreateCellsRadius(Vector3.zero, 15, radius_from: 10);
+		//CreateCellsRadius(Vector3.zero, 20, radius_from: 15);
 	}
-
-	void Start()
-	{
-	}
-
-	public void CreateCell(int x, int y, int z)
+	
+	#region GridCreation
+	public void CreateCell(int x, int y, int z, bool place_ready=true)
     {
 		Vector3 id = new Vector3(x, y, z);
 		if (!cells.ContainsKey(id))
@@ -35,20 +35,100 @@ public class HexGrid : MonoBehaviour
 			cell.GetComponent<HexCell>().id = id;
 			cell.transform.SetParent(transform, false);
 			cell.transform.localPosition = position;
+			if (place_ready)
+            {
+				cell.PlaceHex(false);
+            }
 		}
 	}
 
-	public void CreateCellsAround(Vector3 center)
-    {
-		int x = (int)center.x;
-		int y = (int)center.y;
-		int z = (int)center.z;
-		CreateCell(x - 1, y + 1, z);
-		CreateCell(x + 1, y - 1, z);
-		CreateCell(x, y - 1, z + 1);
-		CreateCell(x - 1, y, z + 1);
-		CreateCell(x + 1, y, z - 1);
-		CreateCell(x, y + 1, z - 1);
+	public void CreateCellsRadius(Vector3 center_hex_id, int radius, int radius_from=0)
+	{
+		int x = (int)center_hex_id.x;
+		int y = (int)center_hex_id.y;
+		int z = (int)center_hex_id.z;
+		CreateCell(x, y, z);
+		for (int tier = radius_from; tier < radius; tier++)
+        {
+			for (int t = 0; t < tier; t++)
+            {
+				CreateCell(-tier, t, tier - t);
+				CreateCell(tier, -t, -(tier - t));
+				CreateCell(tier, -(tier - t), -t);
+			}
+			for (int t = 0; t < tier; t++)
+			{
+				CreateCell(t, -tier, tier - t);
+				CreateCell(-t, tier, -(tier - t));
+				CreateCell(-(tier - t), tier, -t);
+			}
+			for (int t = 0; t < tier; t++)
+			{
+				CreateCell(t, (tier - t), -tier);
+				CreateCell(-t, -(tier - t), tier);
+			}
+		}
 	}
 
+		public void CreateCellsAround(Vector3 center_hex_id)
+    {
+		int x = (int)center_hex_id.x;
+		int y = (int)center_hex_id.y;
+		int z = (int)center_hex_id.z;
+		CreateCell(x, y, z, false);
+		CreateCell(x - 1, y + 1, z, false);
+		CreateCell(x + 1, y - 1, z, false);
+		CreateCell(x, y - 1, z + 1, false);
+		CreateCell(x - 1, y, z + 1, false);
+		CreateCell(x + 1, y, z - 1, false);
+		CreateCell(x, y + 1, z - 1, false);
+	}
+
+	public void GenerateChunk(Vector3 center_hex_id)
+    {
+		//Generate 7 central chunks, and then CreateCellsAround() them
+		int x = (int)center_hex_id.x;
+		int y = (int)center_hex_id.y;
+		int z = (int)center_hex_id.z;
+		CreateCell(x, y, z);
+		CreateCellsAround(new Vector3(x - 2, y + 2, z));
+		CreateCellsAround(new Vector3(x + 2, y - 2, z));
+		CreateCellsAround(new Vector3(x, y - 2, z + 2));
+		CreateCellsAround(new Vector3(x - 2, y, z + 2));
+		CreateCellsAround(new Vector3(x + 2, y, z - 2));
+		CreateCellsAround(new Vector3(x, y + 2, z - 2));
+	}
+
+
+	#endregion
+
+	#region CellManiplation
+
+	[PunRPC]
+	private void _placeHex(Vector3 hex_id, bool generate_neighbours)
+    {
+		cells[hex_id].PlaceHex(generate_neighbours);
+    }
+
+	[PunRPC]
+	private void _placeBuilding(Vector3 hex_id)
+    {
+		cells[hex_id].PlaceBuilding(0);
+    }
+
+    #endregion
+
+    #region RpcCellHandler
+
+	public void PlaceHexRPC(Vector3 hex_id, bool generate_neighbours)
+    {
+		this.photonView.RPC("_placeHex", RpcTarget.All, hex_id, generate_neighbours);
+	}
+
+	public void PlaceBuildingRPC(Vector3 hex_id)
+    {
+		this.photonView.RPC("_placeBuilding", RpcTarget.All, hex_id);
+	}
+
+	#endregion
 }

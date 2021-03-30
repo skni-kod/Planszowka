@@ -50,7 +50,7 @@ MeshRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3896708735544295186}
   m_Enabled: 1
-  m_CastShadows: 1
+  m_CastShadows: 2
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
   m_MotionVectors: 1
@@ -107,12 +107,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a6cc401da26765c4aa12faa460f9ef45, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  materials:
-  - {fileID: 2100000, guid: 9e4152dd84ab29d48ba570ce9c29c37e, type: 2}
-  - {fileID: 2100000, guid: e2e6271055727af4db4285bab6a5265f, type: 2}
   type: 0
   grid_reference: {fileID: 0}
-  neighbours: []
   id: {x: 0, y: 0, z: 0}
   settled: 0
+  has_building: 0
   owner: none
