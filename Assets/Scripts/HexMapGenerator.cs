@@ -4,31 +4,80 @@ using UnityEngine;
 
 public static class HexMapGenerator
 {
-    public static float pineForestChance = 0.5f;
+    public static float pineForestChance = 0.50f;
     public static float waterChance = 0.34f;
     public static float seed = 2137f;
 
+    private static Vector3 HexToKartezjan(Vector3 id)
+    {
+        return new Vector3((id.x - id.y) * (HexMetrics.innerRadius), 0f, id.z * (HexMetrics.outerRadius * 1.5f));
+    }
 
-    public static string GenerateHexType(Vector3 id)
+
+    public static KeyValuePair<int, string> GenerateHexType(Vector3 id)
     {
         string type = "grass";
-
+        int rotation = -1;
+        int[] neighbours = { 0, 0, 0, 0, 0, 0 };
         float x = (id.x - id.y) * (HexMetrics.innerRadius);
         float z = id.z * (HexMetrics.outerRadius * 1.5f);
 
 
         if (GeneratePineForestChance(x, z) < pineForestChance)
             type = "small_forest";
-        if (GeneratePineForestChance(x, z) < pineForestChance * 0.7f)
+        if (GeneratePineForestChance(x, z) < pineForestChance * 0.76f)
             type = "medium_forest";
         if (GeneratePineForestChance(x, z) < pineForestChance * 0.4f)
             type = "large_forest";
 
         if (GenerateWaterChance(x, z) < waterChance)
-            type = "water";
+        {
+            
+            type = "water0";
+
+            if (GenerateWaterChance(HexToKartezjan(new Vector3(id.x - 1, id.y, id.z + 1)).x, HexToKartezjan(new Vector3(id.x - 1, id.y, id.z + 1)).z) < waterChance)
+                neighbours[0] = 1;
+            if (GenerateWaterChance(HexToKartezjan(new Vector3(id.x, id.y -1 , id.z + 1)).x, HexToKartezjan(new Vector3(id.x, id.y - 1, id.z + 1)).z) < waterChance)
+                neighbours[1] = 1;
+            if (GenerateWaterChance(HexToKartezjan(new Vector3(id.x + 1, id.y - 1, id.z)).x, HexToKartezjan(new Vector3(id.x + 1, id.y - 1, id.z)).z) < waterChance)
+                neighbours[2] = 1;
+            if (GenerateWaterChance(HexToKartezjan(new Vector3(id.x + 1, id.y, id.z - 1)).x, HexToKartezjan(new Vector3(id.x + 1, id.y, id.z - 1)).z) < waterChance)
+                neighbours[3] = 1;
+            if (GenerateWaterChance(HexToKartezjan(new Vector3(id.x, id.y + 1, id.z - 1)).x, HexToKartezjan(new Vector3(id.x, id.y + 1, id.z - 1)).z) < waterChance)
+                neighbours[4] = 1;
+            if (GenerateWaterChance(HexToKartezjan(new Vector3(id.x - 1, id.y + 1, id.z)).x, HexToKartezjan(new Vector3(id.x - 1, id.y + 1, id.z)).z) < waterChance)
+                neighbours[5] = 1;
+
+            string new_str = "";
+            foreach (int num in neighbours)
+                new_str += num.ToString();
 
 
-        return type;
+            for (int i = 0; i < 6; i++)
+            {
+                if (WaterData.waterCodes.ContainsKey(new_str))
+                {
+                    type = WaterData.waterCodes[new_str];
+                    break;
+                }
+                new_str = PushStringLeft(new_str);
+                rotation += 1;
+            }
+            
+
+
+        }
+
+
+        return new KeyValuePair<int, string>(rotation, type);
+    }
+
+
+    public static string PushStringLeft(string strin)
+    {
+        string new_string = strin.Substring(1, 5);
+        new_string += strin[0];
+        return new_string;
     }
 
 

@@ -20,4 +20,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/online_game.unity
     guid: c36eb7525f0b2fb438c47e2e50035560
+  - enabled: 1
+    path: Assets/Scenes/map_testing_scene.unity
+    guid: 836d8cbd87e6b0c448270055a1555372
   m_configObjects: {}

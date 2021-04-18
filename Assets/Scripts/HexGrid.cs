@@ -8,6 +8,7 @@ public class HexGrid : MonoBehaviourPun
 	[SerializeField]
 	private int InitialGridSize = 10;
 	public HexCell cellPrefab;
+	public CameraScript camera_reference;
 
 	public Dictionary<Vector3, HexCell> cells = new Dictionary<Vector3, HexCell>();
 
@@ -116,9 +117,27 @@ public class HexGrid : MonoBehaviourPun
 		cells[hex_id].PlaceBuilding(0);
     }
 
-    #endregion
+	[PunRPC]
+	private void _claimHex(Vector3 hex_id, int owner_id)
+	{
+		cells[hex_id].SetOwner(owner_id);
+	}
 
-    #region RpcCellHandler
+	[PunRPC]
+	private void _changeType(Vector3 hex_id, string typee)
+	{
+		cells[hex_id].ChangeType(typee);
+	}
+
+	[PunRPC]
+	private void _rotateBuilding(Vector3 hex_id)
+	{
+		cells[hex_id].RotateRight(1);
+	}
+
+	#endregion
+
+	#region RpcCellHandler
 
 	public void PlaceHexRPC(Vector3 hex_id, bool generate_neighbours)
     {
@@ -128,6 +147,22 @@ public class HexGrid : MonoBehaviourPun
 	public void PlaceBuildingRPC(Vector3 hex_id)
     {
 		this.photonView.RPC("_placeBuilding", RpcTarget.All, hex_id);
+	}
+
+
+	public void ClaimHexRPC(Vector3 hex_id, int owner_id)
+    {
+		this.photonView.RPC("_claimHex", RpcTarget.All, hex_id, owner_id);
+	}
+
+	public void ChangeTypeRPC(Vector3 hex_id, string typee)
+	{
+		this.photonView.RPC("_changeType", RpcTarget.All, hex_id, typee);
+	}
+
+	public void RotateBuildingRPC(Vector3 hex_id)
+    {
+		this.photonView.RPC("_rotateBuilding", RpcTarget.All, hex_id);
 	}
 
 	#endregion

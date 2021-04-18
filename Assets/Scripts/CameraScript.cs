@@ -5,10 +5,11 @@ using Photon.Pun;
 
 public class CameraScript : MonoBehaviourPun
 {
-    public GameObject selected_object;
+    public HexCell selected_object;
     private Camera cameraa;
     public HexGrid grid_reference;
     public Transform camera_holder;
+    public bool highligth_on_hover = false;
 
     //public int current_model_to_place;
 
@@ -32,21 +33,22 @@ public class CameraScript : MonoBehaviourPun
         if (selected_object != null)
         {
             HexCell hex = selected_object.GetComponent<HexCell>();
-            Vector3 hex_id = hex.id;
-
+            if (highligth_on_hover)
+                hex.Highligth();
         }
     }
 
     void PickHex()
     {
         //We scan enviroment for objects with 'Hex' tag, if we find one we place it in the selected_object
+        // FIX picks only first objects !!!!
         RaycastHit hit;
         Ray ray = cameraa.ScreenPointToRay(Input.mousePosition);
 
         if (Physics.Raycast(ray, out hit))
         {
             if (hit.collider.tag == "Hex")
-                selected_object = hit.collider.gameObject;
+                selected_object = hit.collider.gameObject.GetComponent<HexCell>();
         }
         else
         {

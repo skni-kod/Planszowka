@@ -8,9 +8,9 @@ public static class TreesData
     public static Dictionary<string, List<string>> trees = new Dictionary<string, List<string>>
     {
 
-        { "small_forest", new List<string>() { "forest1", "forest1", "forest1"} },
-        { "medium_forest", new List<string>() { "medium_tree" } },
-        { "large_forest", new List<string>() { "big_tree" } },
+        { "small_forest", new List<string>() { "forest_medium1"} },
+        { "medium_forest", new List<string>() { "forest_medium2" } },
+        { "large_forest", new List<string>() { "forest_medium3" } },
 
     };
 
