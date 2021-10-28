@@ -4,7 +4,7 @@ using UnityEngine.SceneManagement;
 using UnityEngine;
 using Photon.Pun;
 using Photon.Realtime;
-
+using UnityEngine.UI;
 public class Room : MonoBehaviourPunCallbacks
 {
     public ButtonListManager roomListButtons;
@@ -79,9 +79,22 @@ public class Room : MonoBehaviourPunCallbacks
             if (!player.IsLocal)
             {
                 players.Add(player);
-                roomListButtons.CreateButton(player.ActorNumber.ToString());
+                roomListButtons.CreateButton(player.NickName==""?player.ActorNumber.ToString():player.NickName);
             }
         }
     }
+    public void UpdatePlayerNickName()
+    {
+        foreach(Player player in PhotonNetwork.PlayerList)
+        {
+            if (player.IsLocal) 
+            { 
+               
+                player.NickName = FindObjectOfType<InputField>().text;
+                PlayerPrefs.SetString("nick", player.NickName);
+            }
 
+        }
+    }
+    
 }
