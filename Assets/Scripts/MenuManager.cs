@@ -5,12 +5,18 @@ using UnityEngine.SceneManagement;
 
 public class MenuManager : MonoBehaviour
 {
-
+    public GameObject przejscie;
+    private string sceneName;
     public void ChangeScene(string name)
     {
-        SceneManager.LoadScene(name);
+        sceneName = name;
+        przejscie.SetActive(true);
+        Invoke("ChangeScene2", 2f);
     }
-
+    private void ChangeScene2()
+    {
+        SceneManager.LoadScene(sceneName);
+    }
     public void QuitGame()
     {
         Application.Quit();
