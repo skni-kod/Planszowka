@@ -36,8 +36,7 @@ public class HexCords
         hex_crds = HexMetrics.CartesianToHexCords(crt_crds);
     }
 
-<<<<<<< Updated upstream
-=======
+
     public static List<Vector3> getCorrectedHexCords(Vector3 hex_cords)
     {
         List<Vector3> list_of_correct_cords = new List<Vector3>();
@@ -57,7 +56,6 @@ public class HexCords
         return list_of_correct_cords;
     }
 
->>>>>>> Stashed changes
     public bool checkIntegrity()
     {
         if (hex_crds.x + hex_crds.y + hex_crds.z == 0)
@@ -65,8 +63,6 @@ public class HexCords
         return false;
     }
 
-<<<<<<< Updated upstream
-=======
     public static bool checkIntegrity(int x, int y, int z)
     {
         if (x + y + z == 0)
@@ -74,7 +70,6 @@ public class HexCords
         return false;
     }
 
->>>>>>> Stashed changes
     public HexCords(float x, float z)
     {
         crt_crds = new Vector3(x, 0, z);
@@ -147,10 +142,6 @@ public class HexCords
 
     }
 
-<<<<<<< Updated upstream
-    public static HexCords ChunkIdFromHexId(HexCords hex_id)
-    {
-=======
     public static HexChunk CheckWhichChunkPointBelongsTo(float x_cart, float z_cart)
     {
         Vector3 point = new Vector3(x_cart, 0 , z_cart);
@@ -264,7 +255,6 @@ public class HexCords
     public static HexCords ChunkIdFromHexId(HexCords hex_id)
     {
 
->>>>>>> Stashed changes
         int x = (int)hex_id.hex_crds.x % 11;
         int chunk_x = ((int)hex_id.hex_crds.x - x) / 11;
         int y = (int)hex_id.hex_crds.y % 11;
@@ -274,14 +264,7 @@ public class HexCords
 
         HexCords chunk_id = new HexCords(chunk_x, chunk_y, chunk_z);
         if (!chunk_id.checkIntegrity())
-<<<<<<< Updated upstream
             return new HexCords();
-=======
-        {
-            return new HexCords();
-        }
-
->>>>>>> Stashed changes
 
         int x2 = 0;
         int y2 = 0;

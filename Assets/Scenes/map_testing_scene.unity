@@ -121,8 +121,6 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
-<<<<<<< Updated upstream
-=======
 --- !u!1 &239636594
 GameObject:
   m_ObjectHideFlags: 0
@@ -171,7 +169,6 @@ MonoBehaviour:
   blendDistance: 0
   weight: 1
   priority: 0
->>>>>>> Stashed changes
 --- !u!1 &241638821 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 858034718494755896, guid: 7e741d17a6b975d4b89f244c68721ad7,

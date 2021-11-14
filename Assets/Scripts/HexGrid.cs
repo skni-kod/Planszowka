@@ -18,20 +18,7 @@ public class HexGrid : MonoBehaviourPun
 
 	void Awake()
 	{
-<<<<<<< Updated upstream
-		//CreateCell(0, 0, 0, false);
 		GenerateChunk(new HexCords(0, 0, 0));
-		GenerateChunk(new HexCords(1, 0, -1));
-		/*GenerateChunk(new HexCords(0, -1, 1));
-		GenerateChunk(new HexCords(-1, 0, 1));
-		GenerateChunk(new HexCords(0, 1, -1));
-		GenerateChunk(new HexCords(-1, 1, 0));
-		GenerateChunk(new HexCords(1, -1, 0));*/
-		//CreateCellsRadius(Vector3.zero, 15, radius_from: 10);
-		//CreateCellsRadius(Vector3.zero, 20, radius_from: 15);
-=======
-		GenerateChunk(new HexCords(0, 0, 0));
->>>>>>> Stashed changes
 	}
 	
 	#region GridCreation
@@ -41,14 +28,6 @@ public class HexGrid : MonoBehaviourPun
 		//First we check if this cell isn't already created before, just in case
 		if (!cells.ContainsKey(id))
         {
-<<<<<<< Updated upstream
-			/*Vector3 position;
-			position.x = (x - y) * (HexMetrics.innerRadius);
-			position.y = 0f;
-			position.z = z * (HexMetrics.outerRadius * 1.5f);*/
-
-=======
->>>>>>> Stashed changes
 			HexCell cell = cells[id] = Instantiate<HexCell>(cellPrefab);
 			cell.GetComponent<HexCell>().grid_reference = this;
 			cell.GetComponent<HexCell>().id = id;
@@ -61,10 +40,6 @@ public class HexGrid : MonoBehaviourPun
 		}
 	}
 
-<<<<<<< Updated upstream
-	public void CreateCell(HexCords cords, bool place_ready = true)
-	{
-=======
 	public HexCell ReturnCreateCell(int x, int y, int z, Transform _parent)
 	{
 		Vector3 id = new Vector3(x, y, z);
@@ -87,7 +62,6 @@ public class HexGrid : MonoBehaviourPun
 
 	public void CreateCell(HexCords cords, bool place_ready = true)
 	{
->>>>>>> Stashed changes
 		Vector3 id = cords.hex_crds;
 		//First we check if this cell isn't already created before, just in case
 		if (!cells.ContainsKey(id))
@@ -148,14 +122,6 @@ public class HexGrid : MonoBehaviourPun
 
 	public void GenerateChunk(HexCords chunk_id)
     {
-<<<<<<< Updated upstream
-		HexCords center = HexCords.FromChunkId(chunk_id);
-		CreateCellsRadius(center, 6);
-		foreach (Vector3 cord in HexCords.CornersIdsFromCenterId(center))
-        {
-			CreateCell((int)cord.x, (int)cord.y, (int)cord.z);
-        }
-=======
 		if (!chunks.ContainsKey(chunk_id.hex_crds))
         {
 			HexChunk chunk = new HexChunk(chunk_id);
@@ -166,7 +132,6 @@ public class HexGrid : MonoBehaviourPun
 			chunk_obj.hex_grid_ref = this;
 			chunk_obj.GenerateCells();
 		}
->>>>>>> Stashed changes
 	}
 
 	public void GenerateChunk(Vector3 chunk_id)
