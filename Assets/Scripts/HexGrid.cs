@@ -9,12 +9,16 @@ public class HexGrid : MonoBehaviourPun
 	[SerializeField]
 	private int InitialGridSize = 10;
 	public HexCell cellPrefab;
+	public HexChunkObject chunkprefab;
 	public CameraScript camera_reference;
 
 	public Dictionary<Vector3, HexCell> cells = new Dictionary<Vector3, HexCell>();
+	public Dictionary<Vector3, HexChunkObject> chunks = new Dictionary<Vector3, HexChunkObject>();
+
 
 	void Awake()
 	{
+<<<<<<< Updated upstream
 		//CreateCell(0, 0, 0, false);
 		GenerateChunk(new HexCords(0, 0, 0));
 		GenerateChunk(new HexCords(1, 0, -1));
@@ -25,6 +29,9 @@ public class HexGrid : MonoBehaviourPun
 		GenerateChunk(new HexCords(1, -1, 0));*/
 		//CreateCellsRadius(Vector3.zero, 15, radius_from: 10);
 		//CreateCellsRadius(Vector3.zero, 20, radius_from: 15);
+=======
+		GenerateChunk(new HexCords(0, 0, 0));
+>>>>>>> Stashed changes
 	}
 	
 	#region GridCreation
@@ -34,11 +41,14 @@ public class HexGrid : MonoBehaviourPun
 		//First we check if this cell isn't already created before, just in case
 		if (!cells.ContainsKey(id))
         {
+<<<<<<< Updated upstream
 			/*Vector3 position;
 			position.x = (x - y) * (HexMetrics.innerRadius);
 			position.y = 0f;
 			position.z = z * (HexMetrics.outerRadius * 1.5f);*/
 
+=======
+>>>>>>> Stashed changes
 			HexCell cell = cells[id] = Instantiate<HexCell>(cellPrefab);
 			cell.GetComponent<HexCell>().grid_reference = this;
 			cell.GetComponent<HexCell>().id = id;
@@ -51,8 +61,33 @@ public class HexGrid : MonoBehaviourPun
 		}
 	}
 
+<<<<<<< Updated upstream
 	public void CreateCell(HexCords cords, bool place_ready = true)
 	{
+=======
+	public HexCell ReturnCreateCell(int x, int y, int z, Transform _parent)
+	{
+		Vector3 id = new Vector3(x, y, z);
+		return ReturnCreateCell(id, _parent);
+	}
+
+	public HexCell ReturnCreateCell(Vector3 id, Transform _parent)
+	{
+		//First we check if this cell isn't already created before, just in case
+
+		HexCell cell = cells[id] = Instantiate<HexCell>(cellPrefab);
+		cell.GetComponent<HexCell>().grid_reference = this;
+		cell.GetComponent<HexCell>().id = id;
+		cell.transform.SetParent(_parent, false);
+		cell.transform.localPosition = HexMetrics.HexToCartesianCords((int)id.x, (int)id.y, (int)id.z); ;
+		cell.PlaceHex(false);
+		return cell;
+
+	}
+
+	public void CreateCell(HexCords cords, bool place_ready = true)
+	{
+>>>>>>> Stashed changes
 		Vector3 id = cords.hex_crds;
 		//First we check if this cell isn't already created before, just in case
 		if (!cells.ContainsKey(id))
@@ -113,13 +148,31 @@ public class HexGrid : MonoBehaviourPun
 
 	public void GenerateChunk(HexCords chunk_id)
     {
+<<<<<<< Updated upstream
 		HexCords center = HexCords.FromChunkId(chunk_id);
 		CreateCellsRadius(center, 6);
 		foreach (Vector3 cord in HexCords.CornersIdsFromCenterId(center))
         {
 			CreateCell((int)cord.x, (int)cord.y, (int)cord.z);
         }
+=======
+		if (!chunks.ContainsKey(chunk_id.hex_crds))
+        {
+			HexChunk chunk = new HexChunk(chunk_id);
+			HexChunkObject chunk_obj = Instantiate(chunkprefab);
+			chunks.Add(chunk_id.hex_crds, chunk_obj);
+			chunk_obj.transform.SetParent(transform, false);
+			chunk_obj.data = chunk;
+			chunk_obj.hex_grid_ref = this;
+			chunk_obj.GenerateCells();
+		}
+>>>>>>> Stashed changes
 	}
+
+	public void GenerateChunk(Vector3 chunk_id)
+    {
+		GenerateChunk(new HexCords(chunk_id));
+    }
 
 
 	#endregion
