@@ -15,6 +15,7 @@ public class ManualChunkSpawner : MonoBehaviour
 
     void Update()
     {
+<<<<<<< Updated upstream
         if (Input.GetMouseButton(0))
         {
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -30,5 +31,21 @@ public class ManualChunkSpawner : MonoBehaviour
 
             }
         }
+=======
+
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+
+        float enter = 0.0f;
+
+        if (plane.Raycast(ray, out enter))
+        {
+            Vector3 hitPoint = ray.GetPoint(enter);
+
+            //grid_reference.CreateCellsRadius(new HexCords(hitPoint.x, hitPoint.z), BrushSize);
+            //grid_reference.GenerateChunk(new HexCords(HexCords.CheckWhichChunkPointBelongsTo(hitPoint.x, hitPoint.z).hex_id));
+            //grid_reference
+        }
+
+>>>>>>> Stashed changes
     }
 }

@@ -36,6 +36,28 @@ public class HexCords
         hex_crds = HexMetrics.CartesianToHexCords(crt_crds);
     }
 
+<<<<<<< Updated upstream
+=======
+    public static List<Vector3> getCorrectedHexCords(Vector3 hex_cords)
+    {
+        List<Vector3> list_of_correct_cords = new List<Vector3>();
+
+        for (int x = -1; x <= 1; x++)
+        {
+            for (int y = -1; y <= 1; y++)
+            {
+                for (int z = -1; z <= 1; z++)
+                {
+                    if (checkIntegrity((int)hex_cords.x + x, (int)hex_cords.y + y, (int)hex_cords.z + z))
+                        list_of_correct_cords.Add(new Vector3((int)hex_cords.x + x, (int)hex_cords.y + y, (int)hex_cords.z + z));
+                        
+                }
+            }
+        }
+        return list_of_correct_cords;
+    }
+
+>>>>>>> Stashed changes
     public bool checkIntegrity()
     {
         if (hex_crds.x + hex_crds.y + hex_crds.z == 0)
@@ -43,6 +65,16 @@ public class HexCords
         return false;
     }
 
+<<<<<<< Updated upstream
+=======
+    public static bool checkIntegrity(int x, int y, int z)
+    {
+        if (x + y + z == 0)
+            return true;
+        return false;
+    }
+
+>>>>>>> Stashed changes
     public HexCords(float x, float z)
     {
         crt_crds = new Vector3(x, 0, z);
@@ -115,8 +147,124 @@ public class HexCords
 
     }
 
+<<<<<<< Updated upstream
     public static HexCords ChunkIdFromHexId(HexCords hex_id)
     {
+=======
+    public static HexChunk CheckWhichChunkPointBelongsTo(float x_cart, float z_cart)
+    {
+        Vector3 point = new Vector3(x_cart, 0 , z_cart);
+
+        List<HexChunk> chunk_list_to_check = new List<HexChunk>();
+
+        HexCords hex_id = new HexCords(x_cart, z_cart);
+
+
+        int x = (int)hex_id.hex_crds.x % 11;
+        int chunk_x = ((int)hex_id.hex_crds.x - x) / 11;
+        int y = (int)hex_id.hex_crds.y % 11;
+        int chunk_y = ((int)hex_id.hex_crds.y - y) / 11;
+        int z = (int)hex_id.hex_crds.z % 11;
+        int chunk_z = ((int)hex_id.hex_crds.z - z) / 11;
+
+
+        HexCords chunk_id = new HexCords(chunk_x, chunk_y, chunk_z);
+        
+        if (checkIntegrity(chunk_x, chunk_y, chunk_z))
+        {
+            foreach (Vector3 neighbour_chunk_id in CreateCellsRadiusIDsList(chunk_id, 2))
+            {
+                chunk_list_to_check.Add(new HexChunk(neighbour_chunk_id));
+            }
+
+            foreach (HexChunk chunk in chunk_list_to_check)
+            {
+                if (chunk.cells_ids.Contains(hex_id.hex_crds))
+                {
+                    return chunk;
+                }
+            }
+        }
+        else
+        {
+            List<Vector3> chunkers = getCorrectedHexCords(chunk_id.hex_crds);
+            foreach(Vector3 hex_chunk_id in chunkers)
+            {
+                foreach (Vector3 neighbour_chunk_id in CreateCellsRadiusIDsList(new HexCords(hex_chunk_id), 2))
+                {
+                    chunk_list_to_check.Add(new HexChunk(neighbour_chunk_id));
+                }
+
+                foreach (HexChunk chunk in chunk_list_to_check)
+                {
+                    if (chunk.cells_ids.Contains(hex_id.hex_crds))
+                    {
+                        return chunk;
+                    }
+                }
+            }
+
+        }
+
+
+
+
+        return new HexChunk(99, 99, 99);
+    }
+
+    public static List<Vector3> GenerateChunkIDsList(HexCords chunk_id)
+    {
+        List<Vector3> id_list = new List<Vector3>();
+
+        HexCords center = HexCords.FromChunkId(chunk_id);
+
+        id_list.AddRange(CreateCellsRadiusIDsList(center, 6));
+        id_list.AddRange(HexCords.CornersIdsFromCenterId(center));
+        return id_list;
+    }
+
+    private static void SafeListAdd(List<Vector3> list, Vector3 item)
+    {
+        if (!list.Contains(item))
+            list.Add(item);
+    }
+
+    public static List<Vector3> CreateCellsRadiusIDsList(HexCords center_hex_id, int radius, int radius_from = 0)
+    {
+        List<Vector3> id_list = new List<Vector3>();
+
+        int x = (int)center_hex_id.hex_crds.x;
+        int y = (int)center_hex_id.hex_crds.y;
+        int z = (int)center_hex_id.hex_crds.z;
+        id_list.Add(new Vector3(x, y, z));
+
+        for (int tier = radius_from; tier < radius; tier++)
+        {
+            for (int t = 0; t < tier; t++)
+            {
+                SafeListAdd(id_list, new Vector3(-tier + x, t + y, tier - t + z));
+                SafeListAdd(id_list, new Vector3(tier + x, -t + y, -(tier - t) + z));
+                SafeListAdd(id_list, new Vector3(tier + x, -(tier - t) + y, -t + z));
+            }
+            for (int t = 0; t < tier; t++)
+            {
+                SafeListAdd(id_list, new Vector3(t + x, -tier + y, tier - t + z));
+                SafeListAdd(id_list, new Vector3(-t + x, tier + y, -(tier - t) + z));
+                SafeListAdd(id_list, new Vector3(-(tier - t) + x, tier + y, -t + z));
+            }
+            for (int t = 0; t < tier; t++)
+            {
+                SafeListAdd(id_list, new Vector3(t + x, (tier - t) + y, -tier + z));
+                SafeListAdd(id_list, new Vector3(-t + x, -(tier - t) + y, tier + z));
+            }
+        }
+        return id_list;
+    }
+
+    public static HexCords ChunkIdFromHexId(HexCords hex_id)
+    {
+
+>>>>>>> Stashed changes
         int x = (int)hex_id.hex_crds.x % 11;
         int chunk_x = ((int)hex_id.hex_crds.x - x) / 11;
         int y = (int)hex_id.hex_crds.y % 11;
@@ -126,7 +274,14 @@ public class HexCords
 
         HexCords chunk_id = new HexCords(chunk_x, chunk_y, chunk_z);
         if (!chunk_id.checkIntegrity())
+<<<<<<< Updated upstream
             return new HexCords();
+=======
+        {
+            return new HexCords();
+        }
+
+>>>>>>> Stashed changes
 
         int x2 = 0;
         int y2 = 0;

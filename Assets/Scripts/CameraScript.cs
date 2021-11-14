@@ -6,12 +6,12 @@ using Photon.Pun;
 public class CameraScript : MonoBehaviourPun
 {
     public HexCell selected_object;
+
     private Camera cameraa;
     public HexGrid grid_reference;
     public Transform camera_holder;
     public bool highligth_on_hover = false;
 
-    //public int current_model_to_place;
 
 
     void Start()
@@ -37,6 +37,7 @@ public class CameraScript : MonoBehaviourPun
                 hex.Highligth();
         }
     }
+
 
     void PickHex()
     {

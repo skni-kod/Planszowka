@@ -116,11 +116,13 @@ MonoBehaviour:
   kartezjan_pos: {x: 0, y: 0, z: 0}
   settled: 0
   highlighted: 0
+  perma_highlighted: 0
   show_ownership: 0
+  model_reference: {fileID: 0}
   highligth_model: {fileID: 4183715183686032988}
   ownership_ring: {fileID: 4526904933816574203}
   has_building: 0
-  owner: none
+  owner_id: 0
 --- !u!1 &4183715183686032988
 GameObject:
   m_ObjectHideFlags: 0
